@@ -16,7 +16,7 @@
                     <th><label for="{{$item->eng}}">{{$item->name}}</label></th>
                     <th>{{$item->base}}</th>
                     <th>{{$item->prise}}</th>
-                    <th><input type="number" name="{{$item->id}}[count]"></th>
+                    <th><input type="number" step="0.1" name="{{$item->id}}[count]"></th>
                     <input type="hidden" name="{{$item->id}}[name]" value="{{$item->name}}">
                </tr>
           @endforeach

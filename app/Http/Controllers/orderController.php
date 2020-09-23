@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Item;
 use Carbon\Carbon;
+use App\Item;
 use App\Order;
 use App\Data;
 
@@ -40,12 +40,18 @@ class orderController extends Controller
 
         //発注明細テーブル
         for ($i=1;$i<=5;$i++) {
-            $item = Item::where('id',3)->first();
+            $item = Item::where('id',$i)->first();
+            if(ceil($item->base - $datas[$i]['count']) > 0) {
+                $orderCount = ceil($item->base - $datas[$i]['count']);
+            } else {
+                $orderCount = 0;
+            };
             $data = Data::create([
                 'order_id' => $order->id,
                 'name' => $datas[$i]['name'],
                 'count' => $datas[$i]['count'],
-                'total' => $item->prise * $datas[$i]['count'],
+                'total' => $item->prise * $orderCount,
+                'order_count' => $orderCount,
             ]);
         }
 
