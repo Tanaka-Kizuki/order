@@ -1,5 +1,5 @@
 <h1>Order</h1>
-<form action="/order" method="post">
+<form action="/order/confirmation" method="post">
 @csrf
      <table>
           <thead>

@@ -54,8 +54,10 @@ class orderController extends Controller
                 'order_count' => $orderCount,
             ]);
         }
+        $order = Order::latest()->first();
+        $items = Data::where('order_id',$order->id)->get();
 
-        return redirect('/');
+        return view('order.confirmation',['items' => $items]);
 
     }
 }

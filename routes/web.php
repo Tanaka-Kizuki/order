@@ -18,4 +18,4 @@ Route::get('/', function () {
 });
 
 Route::get('/order','OrderController@index');
-Route::post('/order','OrderController@create');
+Route::post('/order/confirmation','OrderController@create');
