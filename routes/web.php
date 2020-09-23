@@ -14,5 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('order.index');
+    return view('welcome');
 });
+
+Route::get('/order','OrderController@index');
+Route::post('/order','OrderController@create');
