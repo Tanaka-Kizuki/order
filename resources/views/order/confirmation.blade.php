@@ -1,4 +1,7 @@
 <h1>Confirmation</h1>
+<p>発注が確定しました</p>
+<p>発注日:{{$orderDay}}</p>
+<p>納品日:{{$delivery}}</p>
      <table>
           <thead>
                <tr>
@@ -12,10 +15,11 @@
           @foreach($items as $item)
                <tr>
                     <th>{{$item->name}}</th>
-                    <th>{{$item->order_count}}</th>
-                    <th>{{$item->total}}</th>
+                    <th>{{$item->order_count}}個</th>
+                    <th>¥{{$item->total}}</th>
                </tr>
           @endforeach
           </tbody>
-          <input type="submit" value="内容確認">
      </table>
+     <p>合計金額:¥{{$price}}</p>
+<button><a href="/order">戻る</a></button>

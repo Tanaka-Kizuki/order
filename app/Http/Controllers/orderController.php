@@ -12,30 +12,34 @@ use App\Data;
 
 class orderController extends Controller
 {
-    public function index() {
+    public function input() {
         $items = Item::all();
-        return view('order.index',['items' => $items]);
+        $today = new Carbon();
+        $orderDay = $today->format('Y年m月d日');
+        $delivery = Carbon::tomorrow()->format('Y年m月d日');
+        return view('order.index',['items' => $items,'orderDay' => $orderDay,'delivery' => $delivery]);
     }
 
     public function create(Request $request) {
         $datas = $request->all();
-        for ($i=1;$i<=5;$i++) {
-            $data[$i-1]=$datas[$i]['count'];
-        }
+        // for ($i=1;$i<=5;$i++) {
+        //     $data[$i-1]=$datas[$i]['count'];
+        // }
         //発注日時の取得
         $today = new Carbon();
-        $daily = $today->format('Y年m月d日');
+        $orderDay = $today->format('Y年m月d日');
+        $delivery = Carbon::tomorrow()->format('Y年m月d日');
         $year = $today->year;
         $month = $today->month;
         $day = $today->day;
 
         // 発注テーブル
         $order = Order::create([
-            'today' => $daily,
+            'today' => $orderDay,
             'year' => $year,
             'month' => $month,
             'day' => $day,
-            'trader' => 'default' 
+            'shop' => 'default' 
         ]);
 
         //発注明細テーブル
@@ -57,7 +61,12 @@ class orderController extends Controller
         $order = Order::latest()->first();
         $items = Data::where('order_id',$order->id)->get();
 
-        return view('order.confirmation',['items' => $items]);
+        $totalPrice = 0;
+        foreach($items as $item) {
+            $totalPrice = $totalPrice + $item->total;
+        };
+
+        return view('order.confirmation',['items' => $items,'price' => $totalPrice,'orderDay' => $orderDay,'delivery' => $delivery]);
 
     }
 }

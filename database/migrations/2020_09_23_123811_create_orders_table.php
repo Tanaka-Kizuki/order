@@ -19,7 +19,7 @@ class CreateOrdersTable extends Migration
             $table->integer('year');
             $table->integer('month');
             $table->integer('day');
-            $table->string('trader');
+            $table->string('shop');
             $table->timestamps();
         });
     }

@@ -1,6 +1,8 @@
 <h1>Order</h1>
 <form action="/order/confirmation" method="post">
 @csrf
+<p>発注日:{{$orderDay}}</p>
+<p>納品日:{{$delivery}}</p>
      <table>
           <thead>
                <tr>
@@ -21,6 +23,6 @@
                </tr>
           @endforeach
           </tbody>
-          <input type="submit" value="内容確認">
      </table>
+     <input type="submit" value="発注確定">
 </form>

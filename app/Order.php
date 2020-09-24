@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $fillable = [
-        'today', 'year', 'month','day','trader'
+        'today', 'year', 'month','day','shop'
     ];
 
     public function datas()
