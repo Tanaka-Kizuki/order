@@ -26,6 +26,7 @@ class orderController extends Controller
 
     public function create(Request $request) {
         $datas = $request->all();
+        unset($datas['_token']);
         //発注日時の取得
         $today = new Carbon();
         $orderDay = $today->format('Y年m月d日');
@@ -73,7 +74,8 @@ class orderController extends Controller
 
     public function history() {
         $items = [];
-        return view('order.history',['items'=>$items]);
+        $msg = '発注履歴';
+        return view('order.history',['items'=>$items, 'msg' => $msg]);
     }
 
     public function display(Request $request) {
@@ -88,5 +90,20 @@ class orderController extends Controller
             $msg = '発注日:' . $orderDay;
         }
         return view('order.history',['items'=>$datas, 'msg' => $msg]);
+    }
+
+    public function item() {
+        return view('order.item');
+    }
+
+    public function itemCreate(Request $request) {
+        $form = $request->all();
+        unset($form['_token']);
+        Item::create([
+            'name' => $request->name,
+            'prise' => $request->price,
+            'base' => $request->base
+        ]);
+        return view('order.item');
     }
 }

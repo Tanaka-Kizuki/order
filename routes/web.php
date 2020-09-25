@@ -22,3 +22,5 @@ Route::get('/order/input','OrderController@input');
 Route::post('/order/confirmation','OrderController@create');
 Route::get('/order/history','OrderController@history');
 Route::post('/order/history','OrderController@display');
+Route::get('/order/item','OrderController@item');
+Route::post('/order/item','OrderController@itemCreate');

@@ -15,7 +15,7 @@
           <tbody>
           @foreach($items as $item)
                <tr>
-                    <th><label for="{{$item->eng}}">{{$item->name}}</label></th>
+                    <th><p>{{$item->name}}</p></th>
                     <th>{{$item->base}}</th>
                     <th>{{$item->prise}}</th>
                     <th><input type="number" step="0.1" name="{{$item->id}}[count]"></th>
