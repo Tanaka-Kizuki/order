@@ -17,6 +17,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+Route::get('/order','OrderController@index');
 Route::get('/order/input','OrderController@input');
 Route::post('/order/confirmation','OrderController@create');
+Route::get('/order/history','OrderController@history');
+Route::post('/order/history','OrderController@display');

@@ -12,19 +12,20 @@ use App\Data;
 
 class orderController extends Controller
 {
+    public function index() {
+        return view('order.index');
+    }
+
     public function input() {
         $items = Item::all();
         $today = new Carbon();
         $orderDay = $today->format('Y年m月d日');
         $delivery = Carbon::tomorrow()->format('Y年m月d日');
-        return view('order.index',['items' => $items,'orderDay' => $orderDay,'delivery' => $delivery]);
+        return view('order.input',['items' => $items,'orderDay' => $orderDay,'delivery' => $delivery]);
     }
 
     public function create(Request $request) {
         $datas = $request->all();
-        // for ($i=1;$i<=5;$i++) {
-        //     $data[$i-1]=$datas[$i]['count'];
-        // }
         //発注日時の取得
         $today = new Carbon();
         $orderDay = $today->format('Y年m月d日');
@@ -68,5 +69,24 @@ class orderController extends Controller
 
         return view('order.confirmation',['items' => $items,'price' => $totalPrice,'orderDay' => $orderDay,'delivery' => $delivery]);
 
+    }
+
+    public function history() {
+        $items = [];
+        return view('order.history',['items'=>$items]);
+    }
+
+    public function display(Request $request) {
+        $select = new Carbon($request->date);
+        $orderDay = $select->format('Y年m月d日'); 
+        $orders = Order::where('today',$orderDay)->latest()->first();
+        $msg = '発注実績がありません';
+        //発注実績がある場合のみ表示
+        $datas = [];
+        if($orders) {
+            $datas = Data::where('order_id',$orders->id)->get();
+            $msg = '発注日:' . $orderDay;
+        }
+        return view('order.history',['items'=>$datas, 'msg' => $msg]);
     }
 }
