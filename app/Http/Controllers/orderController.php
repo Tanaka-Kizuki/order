@@ -93,7 +93,8 @@ class orderController extends Controller
     }
 
     public function item() {
-        return view('order.item');
+        $items = Item::all();
+        return view('order.item',['items' => $items]);
     }
 
     public function itemCreate(Request $request) {
