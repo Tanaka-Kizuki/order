@@ -1,5 +1,5 @@
 <h1>Confirmation</h1>
-<p>発注が確定しました</p>
+<p>{{$msg}}</p>
 <p>発注日:{{$orderDay}}</p>
 <p>納品日:{{$delivery}}</p>
      <table>

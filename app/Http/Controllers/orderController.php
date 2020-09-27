@@ -36,42 +36,85 @@ class orderController extends Controller
         $day = $today->day;
 
         // 発注テーブル
-        $order = Order::create([
-            'today' => $orderDay,
-            'year' => $year,
-            'month' => $month,
-            'day' => $day,
-            'shop' => 'default' 
-        ]);
+        $oldOrder = Order::latest()->first();
+        if($oldOrder) {
+            if($oldOrder->today == $orderDay) {
+                $oldOrder->fill($datas)->save();
+            } else {
+                $order = Order::create([
+                    'today' => $orderDay,
+                    'year' => $year,
+                    'month' => $month,
+                    'day' => $day,
+                    'shop' => 'default' 
+                ]); 
+            }
+        } else {
+            $order = Order::create([
+                    'today' => $orderDay,
+                    'year' => $year,
+                    'month' => $month,
+                    'day' => $day,
+                    'shop' => 'default' 
+            ]);
+        }
+
+        $order = Order::latest()->first();
 
         //発注明細テーブル
+        $oldData = Data::latest()->first();
         for ($i=1;$i<=Item::count();$i++) {
             $item = Item::where('id',$i)->first();
+
+            //在庫数より発注数の計算
             if(ceil($item->base - $datas[$i]['count']) > 0) {
                 $orderCount = ceil($item->base - $datas[$i]['count']);
             } else {
                 $orderCount = 0;
             };
-            $data = Data::create([
-                'order_id' => $order->id,
-                'name' => $datas[$i]['name'],
-                'count' => $datas[$i]['count'],
-                'total' => $item->prise * $orderCount,
-                'order_count' => $orderCount,
-            ]);
+
+            //1日一回のみ発注可能
+            if($oldData) {
+                if($oldData->order_id != $oldOrder->id) {
+                    $data = Data::create([
+                        'order_id' => $order->id,
+                        'name' => $datas[$i]['name'],
+                        'count' => $datas[$i]['count'],
+                        'total' => $item->prise * $orderCount,
+                        'order_count' => $orderCount,
+                    ]);
+                    $msg = '発注が確定しました';
+                } else {
+                    $msg = 'すでに発注済みです';
+                }
+            } else {
+                $data = Data::create([
+                    'order_id' => $order->id,
+                    'name' => $datas[$i]['name'],
+                    'count' => $datas[$i]['count'],
+                    'total' => $item->prise * $orderCount,
+                    'order_count' => $orderCount,
+                ]);
+                $msg = '発注が確定しました';
+            }
         }
-        $order = Order::latest()->first();
+
+        //最新の発注(現在入力)データ取得
         $items = Data::where('order_id',$order->id)->get();
 
+        //発注合計金額を計算
         $totalPrice = 0;
         foreach($items as $item) {
             $totalPrice = $totalPrice + $item->total;
         };
 
-        return view('order.confirmation',['items' => $items,'price' => $totalPrice,'orderDay' => $orderDay,'delivery' => $delivery]);
+        $param = ['items' => $items,'price' => $totalPrice,'orderDay' => $orderDay,'delivery' => $delivery,'msg' => $msg];
+
+        return view('order.confirmation',$param);
 
     }
 
+    //発注履歴
     public function history() {
         $items = [];
         $msg = '発注履歴';
@@ -92,6 +135,7 @@ class orderController extends Controller
         return view('order.history',['items'=>$datas, 'msg' => $msg]);
     }
 
+    //商品設定
     public function item() {
         $items = Item::all();
         return view('order.item',['items' => $items]);
@@ -105,6 +149,6 @@ class orderController extends Controller
             'prise' => $request->price,
             'base' => $request->base
         ]);
-        return view('order.item');
+        return redirect('/order/item');
     }
 }
