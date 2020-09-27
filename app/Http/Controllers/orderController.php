@@ -45,7 +45,7 @@ class orderController extends Controller
         ]);
 
         //発注明細テーブル
-        for ($i=1;$i<=5;$i++) {
+        for ($i=1;$i<=Item::count();$i++) {
             $item = Item::where('id',$i)->first();
             if(ceil($item->base - $datas[$i]['count']) > 0) {
                 $orderCount = ceil($item->base - $datas[$i]['count']);
