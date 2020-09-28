@@ -17,7 +17,7 @@ class CreateDatasTable extends Migration
             $table->id();
             $table->integer('order_id');
             $table->string('name');
-            $table->integer('count');
+            $table->integer('count')->default(0);;
             $table->integer('total');
             
             $table->timestamps();
