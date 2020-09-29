@@ -123,14 +123,15 @@ class orderController extends Controller
 
     public function display(Request $request) {
         $select = new Carbon($request->date);
-        $orderDay = $select->format('Y年m月d日'); 
+        $orderDay = $select->format('Y年m月d日');
+        $orderDayTomorrow = $select->tomorrow()->format('Y年m月d日');
         $orders = Order::where('today',$orderDay)->latest()->first();
         $msg = '発注実績がありません';
         //発注実績がある場合のみ表示
         $datas = [];
         if($orders) {
             $datas = Data::where('order_id',$orders->id)->get();
-            $msg = '発注日:' . $orderDay;
+            $msg = '発注日:' . $orderDay .' 納品日' . $orderDayTomorrow;
         }
         return view('order.history',['items'=>$datas, 'msg' => $msg]);
     }
@@ -149,6 +150,17 @@ class orderController extends Controller
             'prise' => $request->price,
             'base' => $request->base
         ]);
+        return redirect('/order/item');
+    }
+
+    public function itemEdit(Request $request) {
+        $form = Item::find($request->id);
+        return view('order.itemedit',['form'=>$form]);
+    }
+
+    public function itemUpdate(Request $request) {
+        Item::where('id',$request->id)
+          ->update(['name' => $request->name,'prise' => $request->prise,'base' => $request->base]);
         return redirect('/order/item');
     }
 }

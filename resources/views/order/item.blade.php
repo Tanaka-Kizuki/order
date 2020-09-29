@@ -4,7 +4,7 @@
     <label for="name">商品名</label>
     <input type="text" name="name" id="name">
     <label for="price">価格</label>
-    <input type="numbert" name="price" id="price">
+    <input type="number" name="price" id="price">
     <label for="base">適正数値</label>
     <input type="number" name="base" id="base">
 
@@ -26,6 +26,7 @@
                     <th><p>{{$item->name}}</p></th>
                     <th>{{$item->base}}</th>
                     <th>{{$item->prise}}</th>
+                    <th><a href="/order/item/edit?id={{$item->id}}">Edit</a></th>
                </tr>
           @endforeach
           </tbody>

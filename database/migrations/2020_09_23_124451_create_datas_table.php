@@ -13,11 +13,11 @@ class CreateDatasTable extends Migration
      */
     public function up()
     {
-        Schema::create('datas', function (Blueprint $table) {
+        Schema::create('data', function (Blueprint $table) {
             $table->id();
             $table->integer('order_id');
             $table->string('name');
-            $table->integer('count')->default(0);;
+            $table->integer('count')->default(0);
             $table->integer('total');
             
             $table->timestamps();
