@@ -33,3 +33,6 @@ Route::post('/order/item','OrderController@itemCreate');
 //食材の編集
 Route::get('/order/item/edit','OrderController@itemEdit');
 ROute::post('/order/item/edit','OrderController@itemUpdate');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

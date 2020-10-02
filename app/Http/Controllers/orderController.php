@@ -7,13 +7,14 @@ use Carbon\Carbon;
 use App\Item;
 use App\Order;
 use App\Data;
+use Illuminate\Support\Facades\Auth;
 
 
 
 class orderController extends Controller
 {
     public function index() {
-        return view('order.index');
+        return view('order.index',['user' => Auth::user()]);
     }
 
     public function input() {
