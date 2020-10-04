@@ -22,7 +22,6 @@ class ItemTableSeeder extends Seeder
 
         $param = [
             'name' => 'ベーコン',
-            'eng' => 'bakon',
             'prise' => 886,
             'base' => 2,
         ];
@@ -30,7 +29,6 @@ class ItemTableSeeder extends Seeder
 
         $param = [
             'name' => '山形パン',
-            'eng' => 'pan',
             'prise' => 377,
             'base' => 6,
         ];
@@ -38,7 +36,6 @@ class ItemTableSeeder extends Seeder
 
         $param = [
             'name' => 'マヨネーズ',
-            'eng' => 'mayonnaise',
             'prise' => 435,
             'base' => 0.2,
         ];
@@ -46,7 +43,6 @@ class ItemTableSeeder extends Seeder
 
         $param = [
             'name' => 'マスタード',
-            'eng' => 'mustard',
             'prise' => 278,
             'base' => 0.3,
         ];
